@@ -37,6 +37,9 @@ import { MatrixRainComponent } from './components/matrix-rain/matrix-rain.compon
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 const angularMaterials = [
   MatCardModule,
@@ -51,12 +54,14 @@ const angularMaterials = [
   MatToolbarModule,
   MatPaginatorModule,
   MatSortModule,
+  MatCheckboxModule,
   MatSelectModule,
   MatMenuModule,
   MatDatepickerModule,
   MatNativeDateModule,
   MatSlideToggleModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatProgressBarModule
 ]
 
 @NgModule({
@@ -70,7 +75,8 @@ const angularMaterials = [
     NavbarComponent,
     MatrixRainComponent,
     LoadingSpinnerComponent,
-    DeleteConfirmationComponent
+    DeleteConfirmationComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,

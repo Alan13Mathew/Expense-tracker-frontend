@@ -12,6 +12,7 @@ import { User } from '../../models/user';
 import { LoadingService } from '../../services/loading.service';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 import { Router } from '@angular/router';
+import { FileUploadComponent } from '../file-upload/file-upload.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -70,10 +71,14 @@ export class DashboardComponent implements OnInit, AfterViewInit,OnDestroy {
     if (currentUser?.id) {
       this.expenseService.getExpenses().subscribe({
         next: (expenses) => {
-          this.expenses = this.filterExpensesByTimeRange(expenses);        
+          this.expenses = this.filterExpensesByTimeRange(expenses).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());       
+
           this.dataSource.data = expenses;
           this.calculateStatistics();
           this.initializeCharts();
+          //force material table to update
+          this.dataSource._updateChangeSubscription();
+
         },
         error: (error) => {
           console.error('Expense Fetch Error:', error);
@@ -138,15 +143,22 @@ export class DashboardComponent implements OnInit, AfterViewInit,OnDestroy {
   }
 
   private filterExpensesByTimeRange(expenses: Expense[]): Expense[] {
+    
     if (this.selectedTimeRange === 0) return expenses; // All time
   
+    const today = new Date();
     const cutoffDate = new Date();
-    cutoffDate.setMonth(cutoffDate.getMonth() - this.selectedTimeRange);
+    cutoffDate.setMonth(today.getMonth() - this.selectedTimeRange);
   
-    return expenses.filter(expense => 
-      new Date(expense.date) >= cutoffDate
-    );
+    // Enhanced date filtering
+    const filteredExpenses = expenses.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      return expenseDate.getTime() >= cutoffDate.getTime();
+    });
+
+    return filteredExpenses;
   }
+  
   
 
   private calculateStatistics() {
@@ -237,12 +249,6 @@ export class DashboardComponent implements OnInit, AfterViewInit,OnDestroy {
 
   private createMonthlyChart() {
 
-    // const monthlyData = this.expenses.reduce((acc, exp) => {
-    //   const month = new Date(exp.date).toLocaleString('default', { month: 'short' });
-    //   acc[month] = (acc[month] || 0) + exp.amount;
-    //   return acc;
-    // }, {} as Record<string, number>);
-
     const sortedExpenses = this.expenses.sort((a,b)=> new Date(a.date).getTime() - new Date(b.date).getTime())
 
     const monthlyData: Record<string,number> = {};
@@ -324,4 +330,28 @@ export class DashboardComponent implements OnInit, AfterViewInit,OnDestroy {
       }
     });
   }
+
+  openFileUploadDialog() {
+    const dialogRef = this.dialog.open(FileUploadComponent, {
+      width: '800px',
+      height: '600px',
+      panelClass: 'matrix-dialog'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadExpenseData();
+        this.calculateStatistics();
+        this.initializeCharts();
+        this.dataSource.data = this.expenses
+        if(this.sort){
+          this.dataSource.sort = this.sort;
+        }
+        if(this.paginator){
+          this.dataSource.paginator = this.paginator;
+        }
+      }
+    });
+  }
+  
 }
