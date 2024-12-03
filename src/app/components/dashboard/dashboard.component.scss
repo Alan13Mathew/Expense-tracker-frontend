@@ -413,6 +413,9 @@ body {
   align-items: center;
   background: rgba(0, 255, 65, 0.05) !important;
   backdrop-filter: blur(10px);
+  flex-wrap: wrap;
+  height: auto;
+  gap: 16px;
   border: 1px solid $matrix-border-color;
   border-radius: 8px;
   padding: 16px 24px;
