@@ -1,0 +1,321 @@
+// .matrix-upload {
+//   padding: 20px;
+  
+//   .upload-zone {
+//     border: 2px dashed #00ff41;
+//     border-radius: 8px;
+//     padding: 40px;
+//     text-align: center;
+//     transition: all 0.3s;
+//     cursor: pointer;
+    
+//     &:hover {
+//       background: rgba(0, 255, 65, 0.1);
+//     }
+
+//     mat-icon {
+//       font-size: 48px;
+//       width: 48px;
+//       height: 48px;
+//       color: #00ff41;
+//     }
+//   }
+
+//   .preview-section {
+//     margin-top: 20px;
+
+//     table {
+//       width: 100%;
+//       background: transparent;
+      
+//       th, td {
+//         color: #00ff41;
+//       }
+      
+//       tr.selected {
+//         background: rgba(0, 255, 65, 0.1);
+//       }
+//     }
+
+//     .action-buttons {
+//       margin-top: 20px;
+//       display: flex;
+//       justify-content: flex-end;
+//     }
+//   }
+
+//   .analysis-overlay, .upload-overlay {
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     background: rgba(0, 0, 0, 0.9);
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     animation: fadeIn 0.3s;
+//     z-index: 1000;
+    
+//     h3 {
+//       margin-top: 20px;
+//       color: #00ff41;
+//     }
+//   }
+
+//   .income {
+//     color: #00ff41;
+//   }
+
+//   .expense {
+//     color: #ff4141;
+//   }
+// }
+
+// @keyframes fadeIn {
+//   from { opacity: 0; }
+//   to { opacity: 1; }
+// }
+
+// .csv-guide {
+//   margin-bottom: 20px;
+//   padding: 15px;
+//   background: rgba(0, 255, 65, 0.05);
+//   border-radius: 8px;
+  
+//   h3 {
+//     color: #00ff41;
+//     margin-bottom: 10px;
+//   }
+  
+//   .sample-table {
+//     width: 100%;
+//     border-collapse: collapse;
+    
+//     th, td {
+//       padding: 8px;
+//       text-align: left;
+//       border: 1px solid rgba(0, 255, 65, 0.3);
+//       color: #00ff41;
+//     }
+    
+//     th {
+//       background: rgba(0, 255, 65, 0.1);
+//     }
+//   }
+// }
+
+// }
+
+
+.matrix-upload {
+  padding: 20px;
+  position: relative;
+  min-height: 400px;
+  
+  .upload-zone {
+    border: 2px dashed #00ff41;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+    
+    &:hover {
+      background: rgba(0, 255, 65, 0.1);
+      transform: scale(1.01);
+    }
+
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: #00ff41;
+      animation: pulse 2s infinite;
+    }
+
+    h3 {
+      color: #00ff41;
+      margin: 20px 0;
+      font-family: 'Courier New', monospace;
+      text-transform: uppercase;
+    }
+
+    button {
+      margin: 10px;
+      background: rgba(0, 255, 65, 0.1);
+      color: #00ff41;
+      border: 1px solid #00ff41;
+      
+      &:hover {
+        background: rgba(0, 255, 65, 0.2);
+      }
+    }
+  }
+
+  .preview-section {
+    margin-top: 20px;
+
+    mat-table {
+      width: 100%;
+      background: transparent;
+      border: 1px solid rgba(0, 255, 65, 0.3);
+      border-radius: 4px;
+      
+      th mat-header-cell {
+        color: #00ff41;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: 'Courier New', monospace;
+        text-transform: uppercase;
+        background: rgba(0, 255, 65, 0.1);
+        padding: 16px;
+        border-bottom: 2px solid #00ff41;
+        text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+      }
+
+      td mat-cell {
+        color: #00ff41;
+        padding: 12px;
+        font-family: 'Courier New', monospace;
+        border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+      }
+
+      tr mat-row {
+        &:hover {
+          background: rgba(0, 255, 65, 0.05);
+        }
+        
+        &.selected {
+          background: rgba(0, 255, 65, 0.1);
+        }
+      }
+    }
+
+    .action-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+      
+      button {
+        background: rgba(0, 255, 65, 0.1);
+        color: #00ff41;
+        border: 1px solid #00ff41;
+        
+        &:hover:not([disabled]) {
+          background: rgba(0, 255, 65, 0.2);
+          transform: scale(1.05);
+        }
+        
+        &[disabled] {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  .analysis-overlay, .upload-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.5s;
+    z-index: 1000;
+    
+    h3 {
+      margin-top: 20px;
+      color: #00ff41;
+      font-family: 'Courier New', monospace;
+      animation: flicker 2s infinite;
+    }
+
+    mat-progress-spinner circle {
+      stroke: #00ff41;
+    }
+  }
+
+  .csv-guide {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(0, 255, 65, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    
+    h3 {
+      color: #00ff41;
+      margin-bottom: 15px;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .sample-table {
+      width: 100%;
+      border-collapse: collapse;
+      
+      th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid rgba(0, 255, 65, 0.3);
+        color: #00ff41;
+        font-family: 'Courier New', monospace;
+      }
+      
+      th {
+        background: rgba(0, 255, 65, 0.1);
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+.upload-container {
+    padding: 20px;
+    
+    .file-selection {
+      margin-bottom: 20px;
+    }
+  
+    .selected-file {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: rgba(0, 255, 65, 0.1);
+      border: 1px solid #00ff41;
+      border-radius: 4px;
+      
+      mat-icon {
+        color: #00ff41;
+      }
+      
+      span {
+        flex: 1;
+        color: #00ff41;
+      }
+    }
+  }

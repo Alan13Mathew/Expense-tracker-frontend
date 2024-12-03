@@ -1,0 +1,128 @@
+<div class="matrix-upload" [class.analyzing]="isAnalyzing">
+  <ng-container *ngIf="!showPreview">
+    <div class="upload-zone" 
+         (dragover)="onDragOver($event)" 
+         (drop)="onDrop($event)">
+      <mat-icon>upload_file</mat-icon>
+      <h3>Drop your CSV file here</h3>
+      <p>or</p>
+      <input #fileInput type="file" (change)="onFileSelect($event)" 
+             accept=".xlsx, .xls, .csv" hidden>
+      <button mat-raised-button (click)="fileInput.click()">
+        Select File
+      </button>
+      <div class="selected-file" *ngIf="selectedFile">
+        <mat-icon>description</mat-icon>
+        <span>{{selectedFile.name}}</span>
+        <button mat-icon-button (click)="removeFile()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <button 
+      mat-raised-button 
+      color="accent" 
+      [disabled]="!selectedFile" 
+      (click)="uploadFile()"
+    >
+      <mat-icon>send</mat-icon>
+      Upload Document
+    </button>
+    </div>
+    <button mat-raised-button (click)="showGuidefn()">View CSV Format Guide</button>
+    <div class="csv-guide" *ngIf="showGuide">
+      <h3>Sample CSV/XLSX Format</h3>
+      <table class="sample-table">
+        <tr>
+          <th>date</th>
+          <th>description</th>
+          <th>amount</th>
+          <th>category</th>
+          <th>type</th>
+        </tr>
+        <tr>
+          <td>2024-01-15</td>
+          <td>Groceries</td>
+          <td>-500</td>
+          <td>Food</td>
+          <td>debit</td>
+        </tr>
+        <tr>
+          <td>2024-01-16</td>
+          <td>Salary</td>
+          <td>50000</td>
+          <td>Income</td>
+          <td>credit</td>
+        </tr>
+      </table>
+      <p>type attribute must be either credit or debit</p>
+    </div>
+  </ng-container>
+
+  <div class="analysis-overlay" *ngIf="isAnalyzing">
+    <mat-spinner diameter="48"></mat-spinner>
+    <h3>Analyzing your transactions...</h3>
+  </div>
+
+  <div class="preview-section" *ngIf="showPreview">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="masterToggle()"
+                      [checked]="isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="toggleRow(row)"
+                      [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let row">{{row.date | date}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let row">{{row.description}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef> Amount </th>
+        <td mat-cell *matCellDef="let row">{{row.amount | currency:'INR'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef> Category </th>
+        <td mat-cell *matCellDef="let row">{{row.category}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let row">
+          <span [class]="row.type">{{row.type}}</span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+          [class.selected]="selection.isSelected(row)">
+      </tr>
+    </table>
+
+    <div class="action-buttons">
+      <button mat-raised-button 
+              [disabled]="!selection.hasValue()"
+              (click)="importSelected()">
+        Import Selected ({{selection.selected.length}})
+      </button>
+    </div>
+  </div>
+
+  <div class="upload-overlay" *ngIf="isUploading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <h3>Importing your transactions...</h3>
+  </div>
+</div>
