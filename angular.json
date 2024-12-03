@@ -46,7 +46,8 @@
               "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": ["papaparse"]
           },
           "configurations": {
             "production": {
@@ -54,13 +55,18 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1.5mb",
-                  "maximumError": "2MB"
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "allScript",
-                  "maximumWarning": "1.2mb",
-                  "maximumError": "1.5mb"
+                  "maximumWarning": "2.5mb",
+                  "maximumError": "3.5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "500kb",
+                  "maximumError": "700kb"
                 }
               ],
               "outputHashing": "all"
